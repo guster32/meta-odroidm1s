@@ -18,7 +18,7 @@ Dependencies
 Patches
 =======
 
-Please submit any patches against the meta-odroid layer to the xxxx mailing list (xxxx@zzzz.org)
+Please submit any patches against the meta-odroidm1s layer to the xxxx mailing list (xxxx@zzzz.org)
 and cc: the maintainer:
 
 Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
@@ -30,17 +30,17 @@ Table of Contents
  II. Misc
 
 
-I. Adding the meta-odroid layer to your build
+I. Adding the meta-odroidm1s layer to your build
 =================================================
 
-Run 'bitbake-layers add-layer meta-odroid'
+Run 'bitbake-layers add-layer meta-odroidm1s'
 
 II. Misc
 ========
 
---- replace with specific information about the meta-odroid layer ---
+--- replace with specific information about the meta-odroidm1s layer ---
 
-source oe-init-build-env 
+source oe-init-build-env
 bitbake core-image-minimal
 sudo bmaptool copy --bmap core-image-arcadia-dev-odroid-m1s.rootfs.wic.bmap core-image-arcadia-dev-odroid-m1s.rootfs.wic.xz  /dev/mmcblk0
 
