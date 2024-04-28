@@ -119,8 +119,10 @@ do_compile () {
 }
 
 do_deploy:append() {
-	install -m 644 ${B}/idblock.bin ${DEPLOYDIR}/idblock.bin
-	install -m 644 ${B}/uboot.img ${DEPLOYDIR}/uboot.img
+	install -d ${DEPLOYDIR}
+	install -m 755 ${B}/idblock.bin ${DEPLOYDIR}/idblock.bin
+	install -m 755 ${B}/uboot.img ${DEPLOYDIR}/uboot.img
+	install -m 755 ${WORKDIR}/${UBOOT_ENV_BINARY} ${DEPLOYDIR}/${UBOOT_ENV_BINARY}
 }
 
 COMPATIBLE_MACHINE = "odroid-m1s"
