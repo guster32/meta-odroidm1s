@@ -1,20 +1,20 @@
-From 3e2bb5d4dc1dc402128607bbb4e32c22cced85bd Mon Sep 17 00:00:00 2001
+From d6bd56c49298eb58ee0536e7189cacc86933604f Mon Sep 17 00:00:00 2001
 From: Gustavo Branco <guster32@gmail.com>
-Date: Sun, 12 May 2024 18:26:50 -0700
-Subject: [PATCH] Adds support for Hardkernel Odroid M1s board
+Date: Sat, 29 Jun 2024 16:49:27 -0700
+Subject: [PATCH] Adds-support-for-Hardkernel-Odroid-M1s-board
 
 ---
  .../devicetree/bindings/arm/rockchip.yaml     |   5 +
  arch/arm64/boot/dts/rockchip/Makefile         |   1 +
- .../boot/dts/rockchip/rk3566-odroid-m1s.dts   | 741 ++++++++++++++++++
- 3 files changed, 747 insertions(+)
+ .../boot/dts/rockchip/rk3566-odroid-m1s.dts   | 756 ++++++++++++++++++
+ 3 files changed, 762 insertions(+)
  create mode 100644 arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
 
 diff --git a/Documentation/devicetree/bindings/arm/rockchip.yaml b/Documentation/devicetree/bindings/arm/rockchip.yaml
-index ecdb72a51..e579dc064 100644
+index ca5389862..dfb10e99a 100644
 --- a/Documentation/devicetree/bindings/arm/rockchip.yaml
 +++ b/Documentation/devicetree/bindings/arm/rockchip.yaml
-@@ -541,6 +541,11 @@ properties:
+@@ -551,6 +551,11 @@ properties:
            - const: rockchip,rk3568-odroid-m1
            - const: rockchip,rk3568
  
@@ -27,10 +27,10 @@ index ecdb72a51..e579dc064 100644
          items:
            - const: hugsun,x99
 diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
-index b7fb908eb..a764dfe25 100644
+index e7728007f..35f7ad4a9 100644
 --- a/arch/arm64/boot/dts/rockchip/Makefile
 +++ b/arch/arm64/boot/dts/rockchip/Makefile
-@@ -74,6 +74,7 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-anbernic-rg353ps.dtb
+@@ -75,6 +75,7 @@ dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-anbernic-rg353ps.dtb
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-anbernic-rg353v.dtb
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-anbernic-rg353vs.dtb
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-anbernic-rg503.dtb
@@ -40,10 +40,10 @@ index b7fb908eb..a764dfe25 100644
  dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3566-quartz64-a.dtb
 diff --git a/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
 new file mode 100644
-index 000000000..11227ba0e
+index 000000000..e7eaeac95
 --- /dev/null
 +++ b/arch/arm64/boot/dts/rockchip/rk3566-odroid-m1s.dts
-@@ -0,0 +1,741 @@
+@@ -0,0 +1,756 @@
 +// SPDX-License-Identifier: (GPL-2.0 OR MIT)
 +/*
 + * Copyright (c) 2022 Hardkernel Co., Ltd.
@@ -184,27 +184,37 @@ index 000000000..11227ba0e
 +
 +	vcc5v0_usb_host: vcc5v0-usb-host-regulator {
 +		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_usb_host";
 +		enable-active-high;
-+		gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
++		gpio = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&vcc5v0_usb_host_en_pin>;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vcc5v0_sys>;
++		regulator-name = "vcc5v0_usb_host";
++		regulator-always-on;
++		regulator-boot-on;
 +	};
 +
 +	vcc5v0_usb_otg: vcc5v0-usb-otg-regulator {
 +		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_usb_otg";
 +		enable-active-high;
-+		gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
++		gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
 +		pinctrl-names = "default";
 +		pinctrl-0 = <&vcc5v0_usb_otg_en_pin>;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&vcc5v0_sys>;
++		regulator-name = "vcc5v0_usb_otg";
++		regulator-always-on;
++		regulator-boot-on;
 +	};
++
++		vcc5v0_usb3: vcc5v0-usb3-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc5v0_usb3_en>;
++		regulator-name = "vcc5v0_usb3";
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
 +};
 +
 +&combphy0 {
@@ -608,9 +618,14 @@ index 000000000..11227ba0e
 +
 +	usb {
 +		vcc5v0_usb_host_en_pin: vcc5v0-usb-host-en-pin {
++			rockchip,pins = <3 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		vcc5v0_usb_otg_en_pin: vcc5v0-usb-dr-en-pin {
 +			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
-+		vcc5v0_usb_otg_en_pin: vcc5v0-usb-dr-en-pin {
++
++		vcc5v0_usb3_en: vcc5v0-usb3-en {
 +			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
 +		};
 +	};
@@ -786,5 +801,5 @@ index 000000000..11227ba0e
 +	};
 +};
 -- 
-2.45.0
+2.45.2
 
