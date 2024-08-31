@@ -9,18 +9,17 @@ PROVIDES += "virtual/bootloader u-boot"
 LIC_FILES_CHKSUM = "file://Licenses/gpl-2.0.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}-2017.09:"
-BRANCH = "odroidm1-v2017.09"
 
 UBOOT_INITIAL_ENV = ""
 
 
 
-SRC_URI = "git://github.com/hardkernel/u-boot.git;name=uboot;destsuffix=git/uboot;protocol=https;branch=${BRANCH} \
-					 git://github.com/hardkernel/rk3568_rkbin.git;name=rkbin;destsuffix=git/rkbin;protocol=https;branch=odroidm1-v2017.09 \
+SRC_URI = "git://github.com/hardkernel/u-boot.git;name=uboot;destsuffix=git/uboot;protocol=https;branch=odroidm1-v2017.09 \
+	git://github.com/hardkernel/rk3568_rkbin.git;name=rkbin;destsuffix=git/rkbin;protocol=https;branch=odroidm1-v2017.09 \
 	"
 SRC_URI += "file://rockchip-scripts.sh"
 
-SRCREV_uboot = "ada06d1934de081cbb2830ee032a59c54beb5533"
+SRCREV_uboot = "eb6940fb0ccb802d2001568a4e8030fbea07fb6a"
 SRCREV_rkbin = "0737c2cdd2a1dc9774e77e59dd33fe7b20a839e4"
 SRCREV_FORMAT = "uboot_rkbin"
 
