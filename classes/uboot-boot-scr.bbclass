@@ -46,7 +46,7 @@ UBOOT_ENV_CONFIG ?= "${B}/${UBOOT_ENV}.txt"
 
 UBOOT_LOADADDRESS ?= ""
 UBOOT_FDT_LOADADDR ?= ""
-UBOOT_BOOTARGS ?= "${console} ${root} ${video} ${extra_cmdline}"
+UBOOT_BOOTARGS ?= "${console} ${root} ${video} ${extra_cmdline} ${swiotlb}"
 UBOOT_BOOTTYPE ?= "mmc"
 UBOOT_KERNEL_NAME ?= ""
 UBOOT_INITRD_NAME ?= ""
@@ -57,6 +57,7 @@ UBOOT_ROOT_DEV ?= "${@bb.utils.contains('MACHINE_FEATURES', 'emmc', 'mmcblk0p2',
 UBOOT_ROOT_mmc ?= "${UBOOT_ROOT_DEV} ${UBOOT_ROOT_ARGS}"
 UBOOT_ROOT_nfs ?= "nfs ${UBOOT_ROOT_ARGS}"
 
+UBOOT_SWIOTLB ?= "swiotlb=131072"
 UBOOT_CONSOLE ?= ""
 UBOOT_BOOTPART ?= "1"
 UBOOT_ROOTDEV ?= ""
