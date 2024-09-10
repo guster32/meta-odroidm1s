@@ -126,6 +126,10 @@ python create_uboot_boot_txt() {
             video = localdata.getVar('UBOOT_VIDEO')
             if video:
                 cfgfile.write('setenv video \"%s\" \n' % video)
+            
+            swiotlb = localdata.getVar('UBOOT_SWIOTLB')
+            if swiotlb:
+                cfgfile.write('setenv swiotlb \"%s\" \n' % swiotlb)
 
             extra_cmdline = localdata.getVar('UBOOT_XTRA_CMDLINE')
             if extra_cmdline:
